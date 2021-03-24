@@ -1,15 +1,18 @@
 
-name: Build and upload WebGL artifact
+name: Build and upload WebGL artifact onto a target branch
 
 on:
   push:
     branches: [ main ]
 env:
- UNITY_LICENSE : ${{secrets.UNITY_LICENSE_2019}}
- 
+  UNITY_LICENSE : ${{secrets.UNITY_LICENSE_2019}} # This needs to be setup in the github repository settings
+  UNITY_VERSION : 2019.4.10f1
+  PROJECT_PATH  : /Phong
+  BUILD_NAME    : WebBuild
+  TARGET_BRANCH : builds
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     name : Make a webGL build
     runs-on: ubuntu-latest
@@ -22,28 +25,25 @@ jobs:
     #  Store library in cache
       - uses: actions/cache@v2
         with:
-          path: ./Phong/Library
+          path: ${{ env.PROJECT_PATH }}/Library
           key: LibFiles
 
       - name: Unity - Builder
         uses: game-ci/unity-builder@v2.0-alpha-6
         with:
           allowDirtyBuild: true # TODO - investigate
-          projectPath: Phong/
-          unityVersion: 2019.4.10f1
+          projectPath: ${{ env.PROJECT_PATH }}
+          unityVersion: ${{ env.UNITY_VERSION }}
           targetPlatform: WebGL
           buildsPath: .
-          buildName: WebBuild
-          customImage: 'amoghsubhedar/unity-webgl-editor:latest'
-      
-      - name: Show git status
-        run : git status
-    
+          buildName: ${{ env.BUILD_NAME }}
+          customImage: 'amoghsubhedar/unity-webgl-editor:latest' # using a custom docker image because the default ones for this unity version don't have ffmpeg
+
       - uses: actions/upload-artifact@v2
         with:
-          name: WebBuild
+          name: ${{ env.BUILD_NAME }}
           path: WebGL/
-          retention-days: 1
+          retention-days: 5
       
   commit_build:
     name : Push build on the builds branch
@@ -53,13 +53,14 @@ jobs:
       - name: Checkout builds branch
         uses : actions/checkout@v2
         with :
-          ref: builds
+          ref: ${{ env.TARGET_BRANCH }}
       
       - name: Download artifact from previous job
         uses: actions/download-artifact@v2
         with:
-          name: WebBuild
+          name: ${{ env.BUILD_NAME }}
       
+      # This is only needed if the target branch does not already have the ${{ env.BUILD_NAME }} directory
       - name: Show git status
         run : git add . && git status
 
@@ -67,6 +68,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Deploy web build
-          file_pattern: WebBuild/Build/* WebBuild/TemplateData/*
+          file_pattern: ${{ env.BUILD_NAME }}/Build/* ${{ env.BUILD_NAME }}/TemplateData/*
            # Optional: Skip internal call to `git fetch`
           skip_fetch: true
