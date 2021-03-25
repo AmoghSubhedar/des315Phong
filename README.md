@@ -12,7 +12,12 @@ I uploaded this project to github so that I could use workflows to create a CI p
 - builds: WebGL build of the most recent unity project built from main. This branch acts as the backend for the repo's github pages.
 - backup/release: Older branches that were used to test unity builder.
 
-## Status
+## Templates
+You can use the following scripts as a template to setup this CI pipeline for your repository:
+- [Main workflow file](https://github.com/AmoghSubhedar/des315Phong/blob/main/.github/workflows/main.yml)
+- [html file for the builds branch](https://github.com/AmoghSubhedar/des315Phong/blob/builds/index.html)
+
+## Workflow Status
 - ![main workflow](https://github.com/AmoghSubhedar/des315Phong/actions/workflows/main.yml/badge.svg?main)
 - ![backup workflow](https://github.com/AmoghSubhedar/des315Phong/actions/workflows/backup.yml/badge.svg?backup)
 
