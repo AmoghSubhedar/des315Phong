@@ -1,17 +1,30 @@
 <!DOCTYPE html>
+<script>
+  var buildName = "WebBuild"
+</script>
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>DES315 Project 2 - Phong</title>
-    <link rel="shortcut icon" href="WebBuild/TemplateData/favicon.ico">
-    <link rel="stylesheet" href="WebBuild/TemplateData/style.css">
-    <script src="WebBuild/TemplateData/UnityProgress.js"></script>
-    <script src="WebBuild/Build/UnityLoader.js"></script>
+    <link id="favicon" rel="shortcut icon">
+    <link id="stylesheet" rel="stylesheet">
+
+    <script id="progressBarScript"></script>
+    <script id="unityLoader"></script>
+
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "WebBuild/Build/WebBuild.json", {onProgress: UnityProgress});
+      document.getElementById("favicon").href = buildName + "/TemplateData/favicon.ico"
+      document.getElementById("stylesheet").href = buildName + "/TemplateData/style.css"
+      
+      document.getElementById("progressBarScript").src = buildName + "/TemplateData/UnityProgress.js"
+      document.getElementById("unityLoader").src = buildName + "/Build/UnityLoader.js"
+
+      var pathToBuild = buildName + "/Build/" + buildName + ".json"
+      var unityInstance = UnityLoader.instantiate("unityContainer", pathToBuild, {onProgress: UnityProgress});
     </script>
   </head>
+  
   <body>
     <h3>DES315 Spring 2021<br>
     Project 2 - Game Feel</h3><br><br>
