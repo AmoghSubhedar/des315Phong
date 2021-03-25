@@ -14,6 +14,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
+    if: "!contains(github.event.head_commit.message, 'no ci')" # don't run this workflow if 'no ci' is in the commit message
     name : Make a webGL build
     runs-on: ubuntu-latest
 
