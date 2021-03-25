@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <script>
+  // This should be the same that was used in the workflow file
   var buildName = "WebBuild"
 </script>
 <html lang="en-us">
@@ -11,18 +12,22 @@
     <link id="stylesheet" rel="stylesheet">
 
     <script>
+      // Import favicon and style sheet from TemplateData sub-directory
       document.getElementById("favicon").href = buildName + "/TemplateData/favicon.ico"
       document.getElementById("stylesheet").href = buildName + "/TemplateData/style.css"     
 
+      // Import unity progress script from TemplateData sub-directory
       var unityProgressScript = document.createElement("script")
       unityProgressScript.setAttribute("src", buildName + "/TemplateData/UnityProgress.js")
       document.head.appendChild(unityProgressScript)
 
+      // Import unity loader script from Build sub-directory
       var unityLoaderScript = document.createElement("script")
       unityLoaderScript.setAttribute("src", buildName + "/Build/UnityLoader.js")
       document.head.appendChild(unityLoaderScript)
 
-      unityLoaderScript.onload = () => {
+      // Wait for the previous scripts to be loaded
+      unityLoaderScript.onload = ()=> {
         var pathToBuild = buildName + "/Build/" + buildName + ".json"
         var unityInstance = UnityLoader.instantiate("unityContainer", pathToBuild, {onProgress: UnityProgress});
       }      
