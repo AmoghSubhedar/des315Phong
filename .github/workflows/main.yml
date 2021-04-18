@@ -7,9 +7,9 @@ on:
 env:
   UNITY_LICENSE : ${{secrets.UNITY_LICENSE_2019}} # This needs to be setup in the github repository settings
   UNITY_VERSION : 2019.4.10f1
-  PROJECT_PATH  : Phong/
-  BUILD_NAME    : WebBuild
-  TARGET_BRANCH : builds
+  PROJECT_PATH  : Phong/      # path to the unity project
+  BUILD_NAME    : WebBuild    # name and directory of the WebGL build
+  TARGET_BRANCH : builds      # branch that will host the WebGL build and github pages for this repo
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
